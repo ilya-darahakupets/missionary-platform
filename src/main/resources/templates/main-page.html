@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org http://www.thymeleaf.org
+  http://www.ultraq.net.nz/thymeleaf/layout http://www.ultraq.net.nz/thymeleaf/layout
+  http://www.thymeleaf.org/thymeleaf-extras-springsecurity4 http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missioners Platform</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body style="overflow-x: hidden">
+
+<div class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navbar-header">
+                    <button class="navbar-toggle" data-target="#mobile_menu" data-toggle="collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <a href="/missionary" class="navbar-brand">Missionaries</a>
+                </div>
+
+                <div class="navbar-collapse collapse" id="mobile_menu">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/missionary">Home</a></li>
+                        <li><a href="/missionary/aboutUs">About us</a></li>
+                        <li><a href="/missionary/services">Services</a></li>
+                        <li><a href="/missionary/contacts">Contacts</a></li>
+                    </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-log-in"></span> Login / Sign Up <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/missionary/login">Login</a></li>
+                                <li><a href="/missionary/registration">Sign Up</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid p-0 mb-5">
+    <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item">
+                <img class="w-100" alt="website image" src="/images/main-page/img1.png">
+                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                    <div class="p-3" style="max-width:700px;">
+                        <h6 class="section-title text-white text-uppercase mb-3 animated slideInDown">Missionary</h6>
+                        <h1 class="display-3 text-white mb-4 animated slideInDown">Discover</h1>
+                        <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft" style="margin-top:50%">Our Goals</a>
+                        <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight" style="margin-top:50%">About Us</a></div>
+                </div>
+            </div>
+            <div class="carousel-item active">
+                <img class="w-100" src="/images/main-page/img.png" alt="website image">
+                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                    <div class="p-3" style="max-width:700px;">
+                        <h6 class="section-title text-white text-uppercase mb-3 animated slideInDown">Missionary</h6>
+                        <h1 class="display-3 text-white mb-4 animated slideInDown">It's life being kind</h1>
+                        <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft" style="margin-top:50%">Our Goals</a>
+                        <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight" style="margin-top:50%">About Us</a></div>
+                </div>
+            </div>
+        </div>
+<!--        <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">-->
+<!--            <span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
+<!--            <span class="visually-hidden">Previous</span></button>-->
+<!--        <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">-->
+<!--            <span class="carousel-control-next-icon" aria-hidden="true"></span>-->
+<!--            <span class="visually-hidden">Next</span></button>-->
+    </div>
+</div>
+<div th:if="${isAdmin}">
+    <a href="/admin/dashboard">Admin Dashboard</a> <!-- Кнопка для администратора -->
+</div>
+<section class="service_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>Our <span>Services</span></h2>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-md-4">
+                <div class="box">
+<!--                    <div class="img-box"><img src="assets/images/s1.png" alt="website template image"></div>-->
+                    <i class="glyphicon glyphicon-plus glyphicon-size"></i>
+                    <div class="detail-box">
+                        <h5>Health</h5>
+                        <p>when looking at its layout.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="box">
+<!--                    <div class="img-box"><img src="assets/images/s2.png" alt="website template image"></div>-->
+                    <i class="glyphicon glyphicon-check glyphicon-size"></i>
+                    <div class="detail-box">
+                        <h5>Legal assistance</h5>
+                        <p>when looking at its layout.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="box">
+<!--                    <div class="img-box"><img src="assets/images/s3.png" alt="website template image"></div>-->
+                    <i class="glyphicon glyphicon-home glyphicon-size"></i>
+                    <div class="detail-box">
+                        <h5>Overnight stay</h5>
+                        <p>when looking at its layout.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="box">
+<!--                    <div class="img-box"><img src="assets/images/s4.png" alt="website template image"></div>-->
+                    <i class="glyphicon glyphicon-usd glyphicon-size"></i>
+                    <div class="detail-box">
+                        <h5>Financial assistance</h5>
+                        <p>when looking at its layout.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="box">
+<!--                    <div class="img-box"><img src="assets/images/s5.png" alt="website template image"></div>-->
+                    <i class="glyphicon glyphicon-globe glyphicon-size"></i>
+                    <div class="detail-box">
+                        <h5>Transfer</h5>
+                        <p>when looking at its layout.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="box">
+                    <!--                    <div class="img-box"><img src="assets/images/s5.png" alt="website template image"></div>-->
+                    <i class="glyphicon glyphicon-globe glyphicon-size"></i>
+                    <div class="detail-box">
+                        <h5>Transfer</h5>
+                        <p>when looking at its laasdasdaadyout.</p>
+                    </div>asd
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="box">
+<!--      65x41, 65x65,55x65              <div class="img-box"><img src="assets/images/s6.png" alt="website template image"></div>-->
+                    <i class="glyphicon glyphicon-road glyphicon-size"></i>
+                    <div class="detail-box">
+                        <h5>Transportation support</h5>
+                        <p>when looking at its layout.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn-box"><a href="/missionary/services">Read More</a></div>
+    </div>
+</section>
+
+
+<section class="bg-100">
+    <div class="container">
+        <div class="text-center mb-6">
+            <h3 class="fs-2 fs-md-3">Latest News</h3>
+            <hr class="short" data-zanim-xs="{&quot;from&quot;:{&quot;opacity&quot;:0,&quot;width&quot;:0},&quot;to&quot;:{&quot;opacity&quot;:1,&quot;width&quot;:&quot;4.20873rem&quot;},&quot;duration&quot;:0.8}" style="width: 4.2087rem; opacity: 1;">
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card"><a href="news/news.html"><img class="card-img-top" src="/images/main-page/img_1.png" alt="Featured Image"></a>
+                    <div class="card-body" data-zanim-timeline="{}">
+                        <div class="overflow-hidden"><a href="news/news.html">
+                            <h5 data-zanim-xs="{&quot;delay&quot;:0}" style="transform: translate(0px, 0px); opacity: 1;">Tax impacts of lease mean accounting change</h5>
+                        </a></div>
+                        <div class="overflow-hidden">
+                            <p class="text-500" data-zanim-xs="{&quot;delay&quot;:0.1}" style="transform: translate(0px, 0px); opacity: 1;">By Paul O'Sullivan</p>
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="mt-3" data-zanim-xs="{&quot;delay&quot;:0.2}" style="transform: translate(0px, 0px); opacity: 1;">HMRC released a consultation document to flag some potential tax impacts that a forthcoming change...</p>
+                        </div>
+                        <div class="overflow-hidden">
+                            <div class="d-inline-block" data-zanim-xs="{&quot;delay&quot;:0.3}" style="transform: translate(0px, 0px); opacity: 1;"><a class="d-flex align-items-center" href="news/news.html"><span style="font-weight: 600;">Learn More</span><div class="overflow-hidden ms-2" data-zanim-xs="{&quot;from&quot;:{&quot;opacity&quot;:0,&quot;x&quot;:-30},&quot;to&quot;:{&quot;opacity&quot;:1,&quot;x&quot;:0},&quot;delay&quot;:0.8}" style="transform: translate(0px, 0px); opacity: 1;"><span class="d-inline-block fw-medium">⟶</span></div></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card"><a href="news/news.html"><img class="card-img-top" src="/images/main-page/img_1.png" alt="Featured Image"></a>
+                    <div class="card-body" data-zanim-timeline="{}">
+                        <div class="overflow-hidden"><a href="news/news.html">
+                            <h5 data-zanim-xs="{&quot;delay&quot;:0}" style="transform: translate(0px, 0px); opacity: 1;">What brexit means for data protection law</h5>
+                        </a></div>
+                        <div class="overflow-hidden">
+                            <p class="text-500" data-zanim-xs="{&quot;delay&quot;:0.1}" style="transform: translate(0px, 0px); opacity: 1;">By Enrico Ambrosi</p>
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="mt-3" data-zanim-xs="{&quot;delay&quot;:0.2}" style="transform: translate(0px, 0px); opacity: 1;">Assuming that the referendum is not ignored completely, there are two possible futures for the UK...</p>
+                        </div>
+                        <div class="overflow-hidden">
+                            <div class="d-inline-block" data-zanim-xs="{&quot;delay&quot;:0.3}" style="transform: translate(0px, 0px); opacity: 1;"><a class="d-flex align-items-center" href="news/news.html"><span style="font-weight: 600;">Learn More</span><div class="overflow-hidden ms-2" data-zanim-xs="{&quot;from&quot;:{&quot;opacity&quot;:0,&quot;x&quot;:-30},&quot;to&quot;:{&quot;opacity&quot;:1,&quot;x&quot;:0},&quot;delay&quot;:0.8}" style="transform: translate(0px, 0px); opacity: 1;"><span class="d-inline-block fw-medium">⟶</span></div></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card"><a href="news/news.html"><img class="card-img-top" src="/images/main-page/img_1.png" alt="Featured Image"></a>
+                    <div class="card-body" data-zanim-timeline="{}">
+                        <div class="overflow-hidden"><a href="news/news.html">
+                            <h5 data-zanim-xs="{&quot;delay&quot;:0}" style="transform: translate(0px, 0px); opacity: 1;">The growing meanace of social engineering fraud</h5>
+                        </a></div>
+                        <div class="overflow-hidden">
+                            <p class="text-500" data-zanim-xs="{&quot;delay&quot;:0.1}" style="transform: translate(0px, 0px); opacity: 1;">By Robson</p>
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="mt-3" data-zanim-xs="{&quot;delay&quot;:0.2}" style="transform: translate(0px, 0px); opacity: 1;">Social engineering involves the collection of information from various sources about a target...</p>
+                        </div>
+                        <div class="overflow-hidden">
+                            <div class="d-inline-block" data-zanim-xs="{&quot;delay&quot;:0.3}" style="transform: translate(0px, 0px); opacity: 1;"><a class="d-flex align-items-center" href="news/news.html"><span style="font-weight: 600;">Learn More</span><div class="overflow-hidden ms-2" data-zanim-xs="{&quot;from&quot;:{&quot;opacity&quot;:0,&quot;x&quot;:-30},&quot;to&quot;:{&quot;opacity&quot;:1,&quot;x&quot;:0},&quot;delay&quot;:0.8}" style="transform: translate(0px, 0px); opacity: 1;"><span class="d-inline-block fw-medium">⟶</span></div></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- end of .container-->
+</section>
+
+<div class="footer">
+    <div class="container">
+        <div class="footer-main">
+            <div class="ftr-grids-block">
+                <div class="col-md-3 footer-grid">
+                    <ul>
+                        <li><a href="product.html">...</a></li>
+                        <li><a href="product.html">...</a></li>
+                        <li><a href="product.html">...</a></li>
+                        <li><a href="product.html">...</a></li>
+                        <li><a href="product.html">...</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-grid">
+                    <ul>
+                        <li><a href="login.html">Your Account</a></li>
+                        <li><a href="/missionary/contacts">Contact Us</a></li>
+                        <li><a href="product.html">Location</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-grid">
+                    <ul>
+                        <li><a href="terms.html">Website Terms</a></li>
+                        <li><a href="/missionary/services">Services</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-grid-icon">
+                    <ul>
+                        <li><a href="#"><span class="u-tub"> </span></a></li>
+                        <li><a href="#"><span class="instro"> </span></a></li>
+                        <li><a href="#"><span class="twitter"> </span></a></li>
+                        <li><a href="#"><span class="fb"> </span></a></li>
+                        <li><a href="#"><span class="print"> </span></a></li>
+                    </ul>
+                    <form>
+                        <input class="email-ftr" type="text" value="Newsletter" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Newsletter';}">
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="copy-rights">
+                <p>© 2024. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/js/smooth-scroll.js"></script>
+
+</body>
+</html>

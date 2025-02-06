@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org http://www.thymeleaf.org
+  http://www.ultraq.net.nz/thymeleaf/layout http://www.ultraq.net.nz/thymeleaf/layout
+  http://www.thymeleaf.org/thymeleaf-extras-springsecurity4 http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/about.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+<div class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navbar-header">
+                    <button class="navbar-toggle" data-target="#mobile_menu" data-toggle="collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <a href="/missionary" class="navbar-brand">Missionaries</a>
+                </div>
+
+                <div class="navbar-collapse collapse" id="mobile_menu">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/missionary">Home</a></li>
+                        <li  class="active"><a href="/missionary/aboutUs">About us</a></li>
+                        <li><a href="/missionary/services">Services</a></li>
+                        <li><a href="/missionary/contacts">Contacts</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-log-in"></span> Login / Sign Up <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/missionary/login">Login</a></li>
+                                <li><a href="/missionary/registration">Sign Up</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About Section -->
+
+<section id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 d-flex flex-column justify-content-between pr-md-5">
+                <div>
+                    <h4 class="mb-4 size-30">About us</h4>
+                    <p style="text-align: justify; font-size: 20px">You've inspired new consumer, racked up click-thru's, blown-up brand enes. We can't give you back the weekends you worked, or erase the pain ebeing to make the logo bigger. But if you submit your best work we ajusts might be able to give the chance to show you best digital marketing CES is the world's gathering place for all those who </p>                </div><img class="rounded mt-4 img-fluid" src="/images/reg-page/img.png" alt="" data-zanim-xs="{&quot;from&quot;:{&quot;opacity&quot;:0,&quot;y&quot;:100},&quot;to&quot;:{&quot;opacity&quot;:1,&quot;y&quot;:0},&quot;duration&quot;:2}" style="opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);">
+            </div>
+            <div class="col-md-6 d-flex flex-column justify-content-between mt-5 mt-md-0 pl-md-5">
+                <div>
+                    <h4 class="mb-4 size-30">What is our goal</h4>
+                    <p style="text-align: justify; font-size: 20px">Hear 9 inspiring talks, meet the best product people in Europe, and party together after the event! Twice a year, a group of interesting and impactful people gathers for the week-long experience — which attendees have described as “the ultimate brain spa” and “a journey into the future in the company of those creating it.”year, a group of interesting and impactful people gathers for the week-long experience — which attendees have described as “the ultimate brain spa” and “a journey into the future in the company of those creating it.”</p>         </div><img class="rounded mt-4 img-fluid" src="/images/reg-page/img.png" alt=" " data-zanim-xs="{&quot;from&quot;:{&quot;opacity&quot;:0,&quot;y&quot;:100},&quot;to&quot;:{&quot;opacity&quot;:1,&quot;y&quot;:0},&quot;duration&quot;:2}" style="opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);">
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /About Section -->
+
+
+<div class="footer">
+    <div class="container">
+        <div class="footer-main">
+            <div class="ftr-grids-block">
+                <div class="col-md-3 footer-grid">
+                    <ul>
+                        <li><a href="product.html">...</a></li>
+                        <li><a href="product.html">...</a></li>
+                        <li><a href="product.html">...</a></li>
+                        <li><a href="product.html">...</a></li>
+                        <li><a href="product.html">...</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-grid">
+                    <ul>
+                        <li><a href="login.html">Your Account</a></li>
+                        <li><a href="/missionary/contacts">Contact Us</a></li>
+                        <li><a href="product.html">Location</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-grid">
+                    <ul>
+                        <li><a href="terms.html">Website Terms</a></li>
+                        <li><a href="/missionary/services">Services</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-grid-icon">
+                    <ul>
+                        <li><a href="#"><span class="u-tub"> </span></a></li>
+                        <li><a href="#"><span class="instro"> </span></a></li>
+                        <li><a href="#"><span class="twitter"> </span></a></li>
+                        <li><a href="#"><span class="fb"> </span></a></li>
+                        <li><a href="#"><span class="print"> </span></a></li>
+                    </ul>
+                    <form>
+                        <input class="email-ftr" type="text" value="Newsletter" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Newsletter';}">
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="copy-rights">
+                <p>© 2024. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
