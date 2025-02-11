@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -31,16 +32,24 @@ public class MainController {
 
   @GetMapping("/missionary")
   public String showHomePage(Model model, HttpSession session) {
-
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String username = authentication.getName();
-    boolean isAdmin = authentication.getAuthorities().stream()
-            .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
 
-    // Передаем данные в шаблон
-    model.addAttribute("username", username);
-    model.addAttribute("isAdmin", isAdmin);
-    logger.log(Level.INFO, "Переход на главную страницу.");
+    if (authentication instanceof AnonymousAuthenticationToken) {
+
+      model.addAttribute("username", "Guest");
+      model.addAttribute("isAdmin", false);
+    } else if (authentication != null && authentication.isAuthenticated()) {
+
+      String username = authentication.getName();
+      boolean isAdmin = authentication.getAuthorities().stream()
+              .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+      model.addAttribute("username", username);
+      model.addAttribute("isAdmin", isAdmin);
+    } else {
+
+      model.addAttribute("username", "Unknown");
+      model.addAttribute("isAdmin", false);
+    }
     return "main-page";
   }
 
@@ -52,7 +61,7 @@ public class MainController {
 
   @GetMapping("/missionary/registration")
   public String showRegistrationPage(Model model, HttpSession session) {
-    model.addAttribute("userDto", new UserDto());
+    model.addAttribute("user", new UserDto());
     logger.log(Level.INFO, "Переход на страницу регистрации");
     return "reg-page";
   }

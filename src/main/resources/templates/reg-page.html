@@ -41,39 +41,57 @@
       </div>
   </div>
   <!-- <nav> end ============================-->
-    <main class="main" id="top">
-      <!-- <section> begin ============================-->
+  <main class="main" id="top">
       <section class="text-center py-0">
-        <div class="bg-holder overlay overlay-1" style="background-image:url('/images/reg-page/img.png');"></div>
-        <div class="container">
-          <div class="row min-vh-100 align-items-center">
-            <div class="col-md-9 col-lg-6 mx-auto" data-zanim-timeline="{}">
-              <div class="card" data-zanim-xs="{&quot;delay&quot;:0.1,&quot;duration&quot;:1}" style="transform: translate(0px, 0px); opacity: 1;">
-                <div class="card-body p-md-5">
-                  <h4 class="text-uppercase fs-0 fs-md-1">create your account</h4>
-                  <form class="text-start mt-4">
-                    <div class="row align-items-center g-4">
-                      <div class="col-6"> <input class="form-control" type="text" placeholder="First name" aria-label="First Name"></div>
-                      <div class="col-6"><input class="form-control" type="text" placeholder="Last name" aria-label="Last Name"></div>
-                      <div class="col-12"><input class="form-control" type="email" placeholder="Email Address" aria-label="Email Address"></div>
-                      <div class="col-12"><input class="form-control" type="Password" placeholder="Password" aria-label="Password"></div>
-                      <div class="col-12"><input class="form-control" type="Password" placeholder="Confirm Password" aria-label="Confirm Password"></div>
-                    </div>
-                    <div class="row align-items-center mt-3">
-                      <div class="col-6 mt-3">
-                        <div class="form-check"><input class="form-check-input" id="rememberMe" type="checkbox" value=""><label class="form-check-label text-500 lh-sm fw-semi-bold" for="rememberMe">I agree with the terms &amp; conditions</label></div>
+          <div class="bg-holder overlay overlay-1" style="background-image:url('/images/reg-page/img.png');"></div>
+          <div class="container">
+              <div class="row min-vh-100 align-items-center">
+                  <div class="col-md-9 col-lg-6 mx-auto" data-zanim-timeline="{}">
+                      <div class="card" data-zanim-xs="{&quot;delay&quot;:0.1,&quot;duration&quot;:1}" style="transform: translate(0px, 0px); opacity: 1;">
+                          <div class="card-body p-md-5">
+                              <h4 class="text-uppercase fs-0 fs-md-1">Create your account</h4>
+                              <form th:object="${user}" method="POST" class="text-start mt-4">
+                                  <div class="row align-items-center g-4">
+                                      <div class="col-6">
+                                          <input th:field="*{firstName}" class="form-control" type="text" placeholder="First name" aria-label="First Name">
+                                          <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span>
+                                      </div>
+                                      <div class="col-6">
+                                          <input th:field="*{lastName}" class="form-control" type="text" placeholder="Last name" aria-label="Last Name">
+                                          <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
+                                      </div>
+                                      <div class="col-12">
+                                          <input th:field="*{email}" class="form-control" type="email" placeholder="Email Address" aria-label="Email Address">
+                                          <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
+                                      </div>
+                                      <div class="col-12">
+                                          <input th:field="*{password}" class="form-control" type="password" placeholder="Password" aria-label="Password">
+                                          <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
+                                      </div>
+                                      <div class="col-12">
+                                          <input th:field="*{matchingPassword}" class="form-control" type="password" placeholder="Confirm Password" aria-label="Confirm Password">
+                                          <span th:if="${#fields.hasErrors('matchingPassword')}" th:errors="*{matchingPassword}" class="text-danger"></span>
+                                      </div>
+                                  </div>
+                                  <div class="row align-items-center mt-3">
+                                      <div class="col-6 mt-3">
+                                          <div class="form-check">
+                                              <input class="form-check-input" id="termsAgreement" type="checkbox" required>
+                                              <label class="form-check-label text-500 lh-sm fw-semi-bold" for="termsAgreement">I agree with the terms &amp; conditions</label>
+                                          </div>
+                                      </div>
+                                      <div class="col-6 mt-2 mt-sm-3">
+                                          <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                                      </div>
+                                  </div>
+                              </form>
+                          </div>
                       </div>
-                      <div class="col-6 mt-2 mt-sm-3"><button class="btn btn-primary w-100" type="submit">Create Account</button></div>
-                    </div>
-                  </form>
-                </div>
+                  </div>
               </div>
-            </div>
           </div>
-        </div>
       </section>
-        <!-- <section> close ============================-->
-    </main>
+  </main>
 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

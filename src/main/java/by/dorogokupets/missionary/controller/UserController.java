@@ -4,33 +4,27 @@ import by.dorogokupets.missionary.domain.dto.UserDto;
 import by.dorogokupets.missionary.domain.model.User;
 import by.dorogokupets.missionary.exception.ServiceException;
 import by.dorogokupets.missionary.service.UserService;
-import by.dorogokupets.missionary.validator.UserValidator;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import static by.dorogokupets.missionary.controller.RequestAttributeName.*;
 
 @Controller
 public class UserController {
   private static Logger logger = LogManager.getLogger();
   private final UserService userService;
 
-  private final UserValidator userValidator;
-
 
   @Autowired
-  public UserController(UserService userService, UserValidator userValidator) {
+  public UserController(UserService userService) {
     this.userService = userService;
     this.userValidator = userValidator;
   }
@@ -60,65 +54,25 @@ public class UserController {
   }
 
 
-//  @PostMapping("/kid-shop/logout")
-//  public String logout(HttpSession session) {
-//    session.removeAttribute("userId");
-//    session.removeAttribute("userCart");
-//    session.removeAttribute("user");
-//    session.invalidate();
-//    return "redirect:/kid-shop/login";
-//  }
-
-  @PostMapping(path = "/kid-shop/registration/save")
-  public String registerUser(RedirectAttributes redirectAttributes, @ModelAttribute UserDto userDto) throws ServiceException {
-    if (userService.getMessageIfUserIsPresent(userDto) == null) {
-      if (userValidator.isValidUser(userDto)) {
-        userService.register(userDto);
-        redirectAttributes.addFlashAttribute(MESSAGE, "Вы успешно зарегистрировались");
-        logger.log(Level.INFO, "Успешная регистрация пользователя: " + userDto.getFirstName() + " " + userDto.getLastName());
-        return "redirect:/kid-shop/login";
-      } else {
-        redirectAttributes.addFlashAttribute(MESSAGE, "Неверные значения. Наведитесь на поля, чтобы посмотреть правила заполнения");
-        logger.log(Level.INFO, "Ошибка регистрация пользователя: " + userDto.getFirstName() + " " + userDto.getLastName());
-        return "redirect:/kid-shop/registration";
-      }
-    } else {
-      redirectAttributes.addFlashAttribute(RequestAttributeName.MESSAGE, "Пользователь с таким логином уже существуют!");
-      return "redirect:/kid-shop/registration";
+  @PostMapping("/missionary/registration")
+  public String registerUserAccount(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
+    if (result.hasErrors()) {
+      return "registration";
+    }
+    try {
+      userService.registerNewUserAccount(userDto);
+      return "redirect:/missionary/login?success";
+    } catch (Exception e) {
+      model.addAttribute("error", e.getMessage());
+      return "registration";
     }
   }
 
-  @GetMapping("/kid-shop/admin/user/add")
-  public String showAddUserForm(Model model) {
-    model.addAttribute(RequestAttributeName.USER_DTO, new UserDto());
-
-    return "add-user-form";
-  }
 
   @GetMapping("/kid-shop/admin/panel")
   public String showAdminPage(Model model) {
     logger.log(Level.INFO, "Переход на страницу администратора");
     return "admin-page";
-  }
-
-  @PostMapping(path = "/kid-shop/admin/user/add/save")
-  public String addUser(RedirectAttributes redirectAttributes, @ModelAttribute UserDto userDto) throws ServiceException {
-    if (userService.getMessageIfUserIsPresent(userDto) == null) {
-      if (userValidator.isValidUser(userDto)) {
-        userService.register(userDto);
-        redirectAttributes.addFlashAttribute(RequestAttributeName.MESSAGE, "Пользователь добавлен успешно");
-        logger.log(Level.INFO, "Пользователь добавлен: " + userDto.getFirstName() + " " + userDto.getLastName());
-        return "redirect:/kid-shop/admin/users";
-      } else {
-        redirectAttributes.addFlashAttribute(MESSAGE, "Неверные значения. Наведитесь на поля, чтобы посмотреть правила заполнения");
-        logger.log(Level.INFO, "Ошибка добавления пользователя: " + userDto.getFirstName() + " " + userDto.getLastName());
-        return "redirect:/kid-shop/registration";
-      }
-    } else {
-      redirectAttributes.addFlashAttribute(RequestAttributeName.MESSAGE, "Пользователь с таким логином уже существуют!");
-      return "redirect:/kid-shop/registration";
-    }
-
   }
 
   @GetMapping("/kid-shop/admin/user/edit/{id}")

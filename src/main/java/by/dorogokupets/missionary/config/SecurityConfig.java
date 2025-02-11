@@ -1,10 +1,12 @@
 package by.dorogokupets.missionary.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.SecurityBuilder;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,7 +40,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
     return http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/missionary/login",
+                    .requestMatchers(
                             "/missionary/aboutUs",
                             "/missionary",
                             "/missionary/contacts",
@@ -58,15 +60,22 @@ public class SecurityConfig implements WebSecurityConfigurer {
                     .defaultSuccessUrl("/missionary", true)
             )
             .logout(logout -> logout
+                    .logoutUrl("/missionary/logout")
                     .logoutSuccessUrl("/missionary/login")
-                    .permitAll()
-            )
+                    .permitAll())
             .build();
   }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder(16);
+    return new BCryptPasswordEncoder(13);
+  }
+
+
+
+  @Autowired
+  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
   }
 
   @Override

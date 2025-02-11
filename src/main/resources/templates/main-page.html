@@ -33,8 +33,16 @@
                         <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                         <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-log-in"></span> Login / Sign Up <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="/missionary/login">Login</a></li>
+                                <li th:if="${#authentication.principal == 'anonymousUser'}">
+                                    <a th:href="@{/missionary/login}">Login</a>
+                                </li>
                                 <li><a href="/missionary/registration">Sign Up</a></li>
+                                <li th:if="${#authentication.principal != 'anonymousUser'}">
+                                    <form th:action="@{/missionary/logout}" method="post" style="display: inline;">
+                                        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                        <button type="submit" class="btn btn-link">Logout</button>
+                                    </form>
+                                </li>
                             </ul>
                         </li>
                     </ul>
