@@ -3,6 +3,7 @@ package by.dorogokupets.missionary.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.SecurityBuilder;
@@ -22,15 +23,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig implements WebSecurityConfigurer {
-  @Bean
-  public UserDetailsService userDetailsService() {
-    return new MyUserDetailsService();
-  }
+  @Autowired
+  private MyUserDetailsService userDetailsService;
 
   @Bean
   public AuthenticationProvider authenticationProvider() {
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-    authProvider.setUserDetailsService(userDetailsService());
+    authProvider.setUserDetailsService(userDetailsService);
     authProvider.setPasswordEncoder(passwordEncoder());
     return authProvider;
   }
@@ -38,6 +37,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
+            .authenticationProvider(authenticationProvider())
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(
@@ -45,7 +45,8 @@ public class SecurityConfig implements WebSecurityConfigurer {
                             "/missionary",
                             "/missionary/contacts",
                             "/missionary/registration",
-                            "/missionary/services",
+                            "/missionary/supports",
+                            "/missionary/countries/**",
                             "/css/**",
                             "/js/**",
                             "/bootstrap/**",
@@ -53,8 +54,10 @@ public class SecurityConfig implements WebSecurityConfigurer {
                             "/scss/**",
                             "/images/**").permitAll()
                     .requestMatchers("/missionary/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/missionary/profile").authenticated()
                     .anyRequest().authenticated())
             .formLogin(form -> form
+                    .usernameParameter("email").passwordParameter("password")
                     .loginPage("/missionary/login")
                     .loginProcessingUrl("/missionary/authenticate")
                     .defaultSuccessUrl("/missionary", true)
@@ -72,11 +75,6 @@ public class SecurityConfig implements WebSecurityConfigurer {
   }
 
 
-
-  @Autowired
-  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
-  }
 
   @Override
   public void init(SecurityBuilder builder) throws Exception {

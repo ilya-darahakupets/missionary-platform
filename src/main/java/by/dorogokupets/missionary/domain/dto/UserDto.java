@@ -19,7 +19,7 @@ public class UserDto {
   private Long userId;
   @NotNull
   @NotEmpty
-  private String login;
+  private String email;
   @NotNull
   @NotEmpty
   private String password;
@@ -33,10 +33,6 @@ public class UserDto {
   @NotEmpty
   @Email(message = "Invalid email format")
   private String lastName;
-  @NotNull
-  @NotEmpty
-  private String email;
-
   @NotNull
   @NotEmpty
   private String role;

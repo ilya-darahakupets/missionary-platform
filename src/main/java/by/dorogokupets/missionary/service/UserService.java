@@ -15,8 +15,7 @@ public interface UserService {
 
   Page<User> findAll(int pageNo, int pageSize, String sortBy, String sortDirection);
 
-  User findByEmail(String email);
-//  User findByLogin(String login) throws ServiceException;
+  User findByEmail(String email) throws ServiceException;
 
   User findByUserId(Long userId);
 

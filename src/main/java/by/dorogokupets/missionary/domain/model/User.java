@@ -15,11 +15,9 @@ import java.sql.Timestamp;
 public class User {
 
     @Id
-    @Column(name = "IDuser", nullable = false, unique = true)
+    @Column(name = "iduser", nullable = false, unique = true)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long userId;
-
-    @Column(name = "login")
-    private String login;
 
     @Column(name = "password")
     private String password;
@@ -35,7 +33,6 @@ public class User {
 
     @Column(name = "role")
     private String role;
-
 
 
 }

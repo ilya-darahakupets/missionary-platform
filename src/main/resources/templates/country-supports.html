@@ -6,10 +6,13 @@
   http://www.thymeleaf.org/thymeleaf-extras-springsecurity4 http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
+    <title>Services</title>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/about.css">
+    <link rel="stylesheet" href="/css/support.css">
     <link rel="stylesheet" href="/css/footer.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
 </head>
 <body>
 <div class="navbar navbar-inverse">
@@ -54,28 +57,60 @@
         </div>
     </div>
 </div>
+<h2>Select a Country</h2>
 
-<!-- About Section -->
 
-<section id="about">
+<form method="get" th:action="@{/missionary/supports}">
+    <div class="select-wrap">
+    <select class="js-select"   name="countryId" onchange="this.form.submit()">
+        <option value="">-- Select a Country --</option>
+        <option th:each="country : ${countries}"
+                th:value="${country.id}"
+                th:text="${country.name}"
+                th:selected="${countryId != null && countryId == country.id}">
+        </option>
+    </select>
+    </div>
+</form>
+
+
+<section class="awe-section">
     <div class="container">
+        <!-- title -->
+        <div class="title">
+            <h2 class="title__title">Services</h2>
+            <p class="title__text">You can choose any support for read the information</p>
+        </div><!-- End / title -->
+
         <div class="row">
-            <div class="col-md-6 d-flex flex-column justify-content-between pr-md-5">
-                <div>
-                    <h4 class="mb-4 size-30">About us</h4>
-                    <p style="text-align: justify; font-size: 20px">You've inspired new consumer, racked up click-thru's, blown-up brand enes. We can't give you back the weekends you worked, or erase the pain ebeing to make the logo bigger. But if you submit your best work we ajusts might be able to give the chance to show you best digital marketing CES is the world's gathering place for all those who </p>                </div><img class="rounded mt-4 img-fluid" src="/images/reg-page/img.png" alt="" data-zanim-xs="{&quot;from&quot;:{&quot;opacity&quot;:0,&quot;y&quot;:100},&quot;to&quot;:{&quot;opacity&quot;:1,&quot;y&quot;:0},&quot;duration&quot;:2}" style="opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);">
-            </div>
-            <div class="col-md-6 d-flex flex-column justify-content-between mt-5 mt-md-0 pl-md-5">
-                <div>
-                    <h4 class="mb-4 size-30">What is our goal</h4>
-                    <p style="text-align: justify; font-size: 20px">Hear 9 inspiring talks, meet the best product people in Europe, and party together after the event! Twice a year, a group of interesting and impactful people gathers for the week-long experience — which attendees have described as “the ultimate brain spa” and “a journey into the future in the company of those creating it.”year, a group of interesting and impactful people gathers for the week-long experience — which attendees have described as “the ultimate brain spa” and “a journey into the future in the company of those creating it.”</p>         </div><img class="rounded mt-4 img-fluid" src="/images/reg-page/img.png" alt=" " data-zanim-xs="{&quot;from&quot;:{&quot;opacity&quot;:0,&quot;y&quot;:100},&quot;to&quot;:{&quot;opacity&quot;:1,&quot;y&quot;:0},&quot;duration&quot;:2}" style="opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);">
+            <div class="grid-css grid-css--masonry" data-col-lg="4" data-col-md="3" data-col-sm="2" data-col-xs="1" data-gap="30">
+                <div class="grid__inner" th:each="support : ${supports}" style="position: relative; height: auto;">
+                    <div class="grid-item" style="width: 300px; margin-bottom: 30px;">
+                        <div class="grid-item__inner">
+                            <div class="grid-item__content-wrapper">
+                                <!-- box-image -->
+                                <div class="box-image">
+                                    <div><a class="box-image__bg"      th:href="@{/missionary/supports/{countryId}/{supportId}(countryId=${countryId}, supportId=${support.idSupport})}"
+                                            th:style="'background-image: url(\'' + ${support.getFirstImageUrl()} + '\');'"
+                                            data-effect="mfp-zoom-in">
+                                            <img th:src="${support.getFirstImageUrl()}" alt="Support Image">
+                                            <div class="box-image__info">
+                                                <h4 class="box-image__country" th:text="${support.name}">Service Name</h4>
+                                                <p class="box-image__tour"></p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div><!-- End / box-image -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
-<!-- /About Section -->
 
-
+<br><br><br><br><br><br><br><br><br>
 <div class="footer">
     <div class="container">
         <div class="footer-main">
@@ -123,7 +158,6 @@
         </div>
     </div>
 </div>
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

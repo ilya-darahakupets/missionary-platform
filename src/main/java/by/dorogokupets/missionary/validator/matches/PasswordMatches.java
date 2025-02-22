@@ -1,5 +1,6 @@
 package by.dorogokupets.missionary.validator.matches;
 
+import by.dorogokupets.missionary.validator.PasswordMatchesValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

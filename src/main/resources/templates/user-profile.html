@@ -6,14 +6,12 @@
   http://www.thymeleaf.org/thymeleaf-extras-springsecurity4 http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Missioners Platform</title>
-
+    <title>About Us</title>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/login.css">
-
+    <link rel="stylesheet" href="/css/footer.css">
 </head>
 <body>
-<div class="navbar navbar-inverse" style="z-index: 10">
+<div class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
@@ -25,7 +23,7 @@
                 <div class="navbar-collapse collapse" id="mobile_menu">
                     <ul class="nav navbar-nav">
                         <li><a href="/missionary">Home</a></li>
-                        <li><a href="/missionary/aboutUs">About us</a></li>
+                        <li  class="active"><a href="/missionary/aboutUs">About us</a></li>
                         <li><a href="/missionary/supports">Services</a></li>
                         <li><a href="/missionary/contacts">Contacts</a></li>
                     </ul>
@@ -55,59 +53,72 @@
         </div>
     </div>
 </div>
-<div th:if="${success}" style="color: green;" th:text="${success}"></div>
-<div th:if="${error}" style="color: red;" th:text="${error}"></div>
-<h2>Login</h2>
-<div th:if="${param.error}">
-    Invalid username and password.</div>
-<div th:if="${param.logout}">
-    You have been logged out.</div>
-<div class="big-container" id="bgcontainer" style="z-index: 1; font-family: 'Montserrat', sans-serif;">
-    <div class="form-container sign-up-container">
-        <form action="#">
-            <h1>Create Account</h1>
-            <div class="social-container">
-                <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+
+<h1>My Profile</h1>
+
+<div class="profile-info">
+    <p><strong>Email:</strong> <span th:text="${user.email}">example@example.com</span></p>
+    <p><strong>First Name:</strong> <span th:text="${user.firstName}">John</span></p>
+    <p><strong>Last Name:</strong> <span th:text="${user.lastName}">Doe</span></p>
+</div>
+
+
+<a th:href="@{/missionary/profile/edit}" class="btn btn-primary">Edit Profile</a>
+
+<!-- Ссылка на выход -->
+<form th:action="@{/missionary/logout}" method="post" style="display: inline;">
+    <button type="submit" class="btn btn-danger">Logout</button>
+</form>
+
+
+<div class="footer">
+    <div class="container">
+        <div class="footer-main">
+            <div class="ftr-grids-block">
+                <div class="col-md-3 footer-grid">
+                    <ul>
+                        <li><a href="product.html">...</a></li>
+                        <li><a href="product.html">...</a></li>
+                        <li><a href="product.html">...</a></li>
+                        <li><a href="product.html">...</a></li>
+                        <li><a href="product.html">...</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-grid">
+                    <ul>
+                        <li><a href="login.html">Your Account</a></li>
+                        <li><a href="/missionary/contacts">Contact Us</a></li>
+                        <li><a href="product.html">Location</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-grid">
+                    <ul>
+                        <li><a href="terms.html">Website Terms</a></li>
+                        <li><a href="/missionary/supports">Services</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-grid-icon">
+                    <ul>
+                        <li><a href="#"><span class="u-tub"> </span></a></li>
+                        <li><a href="#"><span class="instro"> </span></a></li>
+                        <li><a href="#"><span class="twitter"> </span></a></li>
+                        <li><a href="#"><span class="fb"> </span></a></li>
+                        <li><a href="#"><span class="print"> </span></a></li>
+                    </ul>
+                    <form>
+                        <input class="email-ftr" type="text" value="Newsletter" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Newsletter';}">
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+                <div class="clearfix"> </div>
             </div>
-            <span></span>
-            <input type="text" placeholder="Name" />
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <button>Sign Up</button>
-        </form>
-    </div>
-    <div class="form-container sign-in-container">
-        <form action="/missionary/authenticate" method="post">
-            <h1>Sign in</h1>
-            <div class="social-container">
-                <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-            <span>Can u write something</span>
-            <input type="email" id="email" name="email" placeholder="Email" required autofocus />
-            <input type="password" id="password" name="password" placeholder="Password" required autofocus />
-            <a href="#">Forgot your password?</a>
-            <button type="submit">Sign In</button>
-        </form>
-    </div>
-    <div class="overlay-container">
-        <div class="overlay">
-            <div class="overlay-panel overlay-left">
-                <h1>Welcome Back!</h1>
-                <p>To keep connected with us please login with your personal info</p>
-                <button class="ghost" id="signIn">Sign In</button>
-            </div>
-            <div class="overlay-panel overlay-right">
-                <h1>Hello, Friend!</h1>
-                <p>Enter your personal details and start journey with us</p>
-                <button class="ghost" id="signUp">Sign Up</button>
+            <div class="copy-rights">
+                <p>© 2024. All Rights Reserved.</p>
             </div>
         </div>
     </div>
 </div>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

@@ -23,15 +23,27 @@
                       <ul class="nav navbar-nav">
                           <li><a href="/missionary">Home</a></li>
                           <li><a href="/missionary/aboutUs">About us</a></li>
-                          <li><a href="/missionary/services">Services</a></li>
+                          <li><a href="/missionary/supports">Services</a></li>
                           <li><a href="/missionary/contacts">Contacts</a></li>
                       </ul>
                       <ul class="nav navbar-nav navbar-right">
-                          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                           <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-log-in"></span> Login / Sign Up <span class="caret"></span></a>
                               <ul class="dropdown-menu">
-                                  <li><a href="/missionary/login">Login</a></li>
-                                  <li class="active"><a href="/missionary/registration">Sign Up</a></li>
+                                  <li th:if="${#authentication.principal == 'anonymousUser'}">
+                                      <a th:href="@{/missionary/login}">Login</a>
+                                  </li>
+                                  <li th:if="${#authentication.principal == 'anonymousUser'}">
+                                      <a href="/missionary/registration">Sign Up</a>
+                                  </li>
+                                  <li th:if="${#authentication.principal != 'anonymousUser'}">
+                                      <a href="/missionary/profile"><span class="glyphicon glyphicon-user"></span>Profile</a>
+                                  </li>
+                                  <li th:if="${#authentication.principal != 'anonymousUser'}">
+                                      <form th:action="@{/missionary/logout}" method="post" style="display: inline;">
+                                          <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                          <button type="submit" id="logout" style="">Logout</button>
+                                      </form>
+                                  </li>
                               </ul>
                           </li>
                       </ul>

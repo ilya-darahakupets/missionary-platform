@@ -11,6 +11,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,7 +28,6 @@ public class UserController {
   @Autowired
   public UserController(UserService userService) {
     this.userService = userService;
-    this.userValidator = userValidator;
   }
 
   @GetMapping("/missionary/admin/users")
@@ -42,13 +43,22 @@ public class UserController {
     return "users";
   }
 
-  @GetMapping("/kid-shop/user/profile")
-  public String userProfile(HttpSession session, Model model) {
-    Long userId = (Long) session.getAttribute("userid");
-    if (userId == null) {
-      return "redirect:/kid-shop/login";
+  @GetMapping("/missionary/profile")
+  public String showUserProfile(Model model) {
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+      return "redirect:/missionary/login";
     }
-    User user = userService.findByUserId(userId);
+    String email = authentication.getName();
+    User user = null;
+    try {
+      user = userService.findByEmail(email);
+    } catch (ServiceException e) {
+      logger.log(Level.WARN, "User not found");
+//      model.addAttribute("error", )
+    }
+
     model.addAttribute("user", user);
     return "user-profile";
   }
@@ -57,14 +67,14 @@ public class UserController {
   @PostMapping("/missionary/registration")
   public String registerUserAccount(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
     if (result.hasErrors()) {
-      return "registration";
+      return "reg-page";
     }
     try {
       userService.registerNewUserAccount(userDto);
       return "redirect:/missionary/login?success";
     } catch (Exception e) {
       model.addAttribute("error", e.getMessage());
-      return "registration";
+      return "reg-page";
     }
   }
 

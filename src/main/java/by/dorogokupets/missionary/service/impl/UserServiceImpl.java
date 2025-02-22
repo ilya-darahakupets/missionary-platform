@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,13 +22,12 @@ import java.util.Optional;
 //@Transactional
 public class UserServiceImpl implements UserService {
 
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
 
   private final UserMapper userMapper;
 
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(13);
 
   @Autowired
   public UserServiceImpl(UserRepository userRepository,
@@ -36,16 +36,16 @@ public class UserServiceImpl implements UserService {
     this.userMapper = userMapper;
   }
 
-  public void registerNewUserAccount(UserDto userDto) throws Exception {
+  public void registerNewUserAccount(UserDto userDto) throws ServiceException {
     if (userRepository.findByEmail(userDto.getEmail()) != null) {
-      throw new Exception("Email already exists");
+      throw new ServiceException("Email already exists");
     }
     User user = new User();
     user.setFirstName(userDto.getFirstName());
     user.setLastName(userDto.getLastName());
     user.setEmail(userDto.getEmail());
     user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-    user.setRole(userDto.getRole());
+    user.setRole(("CLIENT"));
 
     userRepository.save(user);
   }
@@ -81,8 +81,8 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User findByEmail(String email) {
-    return null;
+  public User findByEmail(String email) throws ServiceException {
+    return userRepository.findByEmail(email);
   }
 
 //  @Override
