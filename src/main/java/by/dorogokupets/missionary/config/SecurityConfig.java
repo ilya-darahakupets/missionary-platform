@@ -18,6 +18,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -38,7 +42,9 @@ public class SecurityConfig implements WebSecurityConfigurer {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
             .authenticationProvider(authenticationProvider())
-            .csrf(AbstractHttpConfigurer::disable)
+            .csrf(csrf -> csrf
+                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            )
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(
                             "/missionary/aboutUs",
@@ -61,17 +67,41 @@ public class SecurityConfig implements WebSecurityConfigurer {
                     .loginPage("/missionary/login")
                     .loginProcessingUrl("/missionary/authenticate")
                     .defaultSuccessUrl("/missionary", true)
+                    .failureUrl("/page/login?loginError=true")
+            )
+            .headers(headers -> headers
+//                    .contentSecurityPolicy(csp -> csp
+//                            .policyDirectives("default-src 'self'")
+//                    )
+                    .xssProtection(xss -> xss
+                            .headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK)
+                    )
+                    .httpStrictTransportSecurity(hsts -> hsts
+                            .includeSubDomains(true)
+                            .preload(true)
+                            .maxAgeInSeconds(31536000)
+                    )
+            )
+            .rememberMe((remember) -> remember
+                    .key("001304-123-414-149rmmbr-key")
+                    .tokenValiditySeconds(43200*2)
+                    .rememberMeParameter("remember-me-login")
+                    .rememberMeCookieName("SECURE_REMEMBER_ME")
+                    .userDetailsService(userDetailsService)
+                    .useSecureCookie(true)
             )
             .logout(logout -> logout
                     .logoutUrl("/missionary/logout")
                     .logoutSuccessUrl("/missionary/login")
-                    .permitAll())
+                    .permitAll()
+                    .deleteCookies("JSESSIONID", "SECURE_REMEMBER_ME"))
             .build();
   }
 
+
   @Bean
   public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder(13);
+    return new BCryptPasswordEncoder(12);
   }
 
 

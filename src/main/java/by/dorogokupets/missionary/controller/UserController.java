@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 
 @Controller
 public class UserController {
@@ -45,7 +46,6 @@ public class UserController {
 
   @GetMapping("/missionary/profile")
   public String showUserProfile(Model model) {
-
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication == null || !authentication.isAuthenticated()) {
       return "redirect:/missionary/login";
