@@ -59,7 +59,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                             "/reg-page/**",
                             "/scss/**",
                             "/images/**").permitAll()
-                    .requestMatchers("/missionary/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/missionary/admin/**").hasRole("ADMINRole")
                     .requestMatchers("/missionary/profile").authenticated()
                     .anyRequest().authenticated())
             .formLogin(form -> form
@@ -69,10 +69,20 @@ public class SecurityConfig implements WebSecurityConfigurer {
                     .defaultSuccessUrl("/missionary", true)
                     .failureUrl("/page/login?loginError=true")
             )
+
             .headers(headers -> headers
-//                    .contentSecurityPolicy(csp -> csp
-//                            .policyDirectives("default-src 'self'")
-//                    )
+                    .contentSecurityPolicy(csp -> csp
+                            .policyDirectives(
+                                    "default-src 'self'; " +
+                                            "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
+                                            "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
+                                            "font-src 'self' https://cdn.jsdelivr.net data:; " +
+                                            "img-src 'self' data:; " +                                        // Изображения и Base64
+                                            "form-action 'self'; " +                                           // Отправка форм
+                                            "frame-ancestors 'none'; " +                                        // Защита от clickjacking
+                                    "object-src 'none';"                                               // Запрет плагинов
+                            )
+                    )
                     .xssProtection(xss -> xss
                             .headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK)
                     )
@@ -84,8 +94,9 @@ public class SecurityConfig implements WebSecurityConfigurer {
             )
             .rememberMe((remember) -> remember
                     .key("001304-123-414-149rmmbr-key")
-                    .tokenValiditySeconds(43200*2)
+                    .tokenValiditySeconds(151200*4)
                     .rememberMeParameter("remember-me-login")
+                    .useSecureCookie(true)
                     .rememberMeCookieName("SECURE_REMEMBER_ME")
                     .userDetailsService(userDetailsService)
                     .useSecureCookie(true)
