@@ -6,11 +6,14 @@ import by.dorogokupets.missionary.exception.ServiceException;
 import by.dorogokupets.missionary.mapper.UserMapper;
 import by.dorogokupets.missionary.service.UserService;
 import by.dorogokupets.missionary.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-//@Transactional
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
@@ -27,7 +29,7 @@ public class UserServiceImpl implements UserService {
   private final UserMapper userMapper;
 
 
-  private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(13);
+  private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
   @Autowired
   public UserServiceImpl(UserRepository userRepository,
@@ -36,40 +38,14 @@ public class UserServiceImpl implements UserService {
     this.userMapper = userMapper;
   }
 
-  public void registerNewUserAccount(UserDto userDto) throws ServiceException {
-    if (userRepository.findByEmail(userDto.getEmail()) != null) {
-      throw new ServiceException("Email already exists");
-    }
-    User user = new User();
-    user.setFirstName(userDto.getFirstName());
-    user.setLastName(userDto.getLastName());
-    user.setEmail(userDto.getEmail());
-    user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-    user.setRole(("CLIENT"));
-
-    userRepository.save(user);
-  }
 
   private boolean emailExists(String email) {
-    return userRepository.findByEmail(email) != null;
+    return userRepository.findByEmail(email).isPresent();
   }
 
   @Override
   public void deleteUserById(Long idUser) {
     userRepository.deleteById(idUser);
-  }
-
-
-  @Override
-  public String getMessageIfUserIsPresent(UserDto userDto) {
-//    User existingUser = userRepository.findByLogin(userDto.getLogin());
-//    String message;
-//    if (existingUser != null) {
-//      message="Пользователь с таким логином уже есть!";
-//      return message;
-//    }
-
-    return null;
   }
 
 
@@ -81,19 +57,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User findByEmail(String email) throws ServiceException {
+  public Optional<User> findByEmail(String email) throws ServiceException {
     return userRepository.findByEmail(email);
   }
-
-//  @Override
-//  public User findByLogin(String login) throws ServiceException {
-//    User user = userRepository.findByLogin(login);
-//    if (user != null) {
-//      return user;
-//    } else {
-//      throw new ServiceException("Failed find user by login");
-//    }
-//  }
 
   @Override
   public User findByUserId(Long userId) {
@@ -101,29 +67,52 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User findByNameAndSurname(String firstName, String lastName, String patronymic) {
-    return null;
-  }
-
-//  @Override
-//  public User findByNameAndSurname(String firstName, String lastName) {
-//    return userRepository.findByFirstNameAndLastName(firstName, lastName);
-//  }
-
-  @Override
-  @Transactional(rollbackFor = Exception.class)
-  public void updateUser(UserDto userDto) throws ServiceException {
-    User updatedUser = userMapper.mapToUser(userDto);
-
-
-    userRepository.save(updatedUser);
-  }
-
-
-  @Override
   public UserDto findUserDtoById(Long id) {
     Optional<User> user = userRepository.findById(id);
     return user.map(userMapper::mapToUserDto).orElse(null);
+  }
+
+  @Override
+  public User findByNameAndSurname(String firstName, String lastName) {
+    return userRepository.findByFirstNameAndLastName(firstName, lastName);
+  }
+
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public User updateUser(UserDto userDto) throws ServiceException {
+    User user = userRepository.findById(userDto.getUserId())
+            .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+    if (!user.getEmail().equals(userDto.getEmail())) {
+      if (emailExists(userDto.getEmail())) {
+        throw new ServiceException("Email already exists");
+      }
+      user.setEmail(userDto.getEmail());
+    }
+
+    user.setFirstName(userDto.getFirstName());
+    user.setLastName(userDto.getLastName());
+
+    if (userDto.getPassword() != null
+            && !userDto.getPassword().isEmpty()
+            && userDto.getPassword().equals(userDto.getMatchingPassword())) {
+      user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+    }
+
+    return userRepository.save(user);
+  }
+
+  @Override
+  public User getCurrentUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+      throw new EntityNotFoundException("User is not authenticated");
+    }
+
+    String email = authentication.getName();
+    return userRepository.findByEmail(email)
+            .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + email));
   }
 
 }

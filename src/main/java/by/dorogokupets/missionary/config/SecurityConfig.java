@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,6 +54,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                             "/missionary/registration",
                             "/missionary/supports",
                             "/missionary/countries/**",
+                            "/missionary/profile/**",
                             "/css/**",
                             "/js/**",
                             "/bootstrap/**",
@@ -69,20 +71,19 @@ public class SecurityConfig implements WebSecurityConfigurer {
                     .defaultSuccessUrl("/missionary", true)
                     .failureUrl("/page/login?loginError=true")
             )
-
             .headers(headers -> headers
-                    .contentSecurityPolicy(csp -> csp
-                            .policyDirectives(
-                                    "default-src 'self'; " +
-                                            "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
-                                            "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
-                                            "font-src 'self' https://cdn.jsdelivr.net data:; " +
-                                            "img-src 'self' data:; " +                                        // Изображения и Base64
-                                            "form-action 'self'; " +                                           // Отправка форм
-                                            "frame-ancestors 'none'; " +                                        // Защита от clickjacking
-                                    "object-src 'none';"                                               // Запрет плагинов
-                            )
-                    )
+//                    .contentSecurityPolicy(csp -> csp
+//                            .policyDirectives(
+//                                    "default-src 'self'; " +
+//                                            "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
+//                                            "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
+//                                            "font-src 'self' https://cdn.jsdelivr.net data:; " +
+//                                            "img-src 'self' data:; " +                                        // Изображения и Base64
+//                                            "form-action 'self'; " +                                           // Отправка форм
+//                                            "frame-ancestors 'none'; " +                                        // Защита от clickjacking
+//                                    "object-src 'none';"                                               // Запрет плагинов
+//                            )
+//                    )
                     .xssProtection(xss -> xss
                             .headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK)
                     )

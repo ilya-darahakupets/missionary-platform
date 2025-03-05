@@ -9,6 +9,10 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 
   @Override
   public boolean isValid(UserDto userDto, ConstraintValidatorContext context) {
-    return userDto.getPassword().equals(userDto.getMatchingPassword());
+    if (userDto.getPassword() == null && userDto.getMatchingPassword() == null) {
+      return true;
+    }
+    return userDto.getPassword() != null
+            && userDto.getPassword().equals(userDto.getMatchingPassword());
   }
 }
